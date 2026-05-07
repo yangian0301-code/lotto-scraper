@@ -1,0 +1,60 @@
+body{
+    background:#f5f5f5;
+    font-family:Arial;
+}
+
+.container{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+.lottery-card{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.2);
+    text-align:center;
+    width:90%;
+    max-width:700px;
+}
+
+.title{
+    margin-bottom:30px;
+    font-size:32px;
+    font-weight:bold;
+}
+
+.balls-container{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.ball{
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:white;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.orange{
+    background:#ff9800;
+}
+
+.red{
+    background:#f44336;
+}
+
+.info{
+    font-size:20px;
+    color:#333;
+}
