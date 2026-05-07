@@ -13,23 +13,24 @@ def fetch_lottery():
             "User-Agent": "Mozilla/5.0"
         }
 
-        response = requests.get(URL, headers=headers, timeout=10)
-        response.encoding = "utf-8"
+        r = requests.get(URL, headers=headers, timeout=10)
+        r.encoding = "utf-8"
 
-        soup = BeautifulSoup(response.text, "html.parser")
+        soup = BeautifulSoup(r.text, "html.parser")
 
         result_item = soup.find("div", class_="result-item")
 
-        # 🚨 防止抓不到直接 crash
+        # 🚨 防 crash 重點
         if not result_item:
-            return {"error": "抓不到資料（可能網站變動或被擋）"}
+            return None
 
         period = result_item.find("div", class_="period-title").text.strip()
         date = result_item.find("div", class_="period-date").text.strip()
 
-        balls = result_item.find_all("span", class_="ball ball-orange")
-
-        numbers = [ball.text.strip() for ball in balls]
+        numbers = [
+            x.text.strip()
+            for x in result_item.find_all("span", class_="ball ball-orange")
+        ]
 
         special = result_item.find("span", class_="ball ball-red").text.strip()
 
@@ -40,20 +41,20 @@ def fetch_lottery():
             "special": special
         }
 
-    except Exception as e:
-        return {"error": str(e)}
+    except:
+        return None
 
 
 @app.route("/")
 def home():
     data = fetch_lottery()
 
-    # 🚨 避免 Render 直接 500
-    if "error" in data:
-        return f"系統暫時異常：{data['error']}", 200
+    # 🚨 不讓 Flask crash（避免 502）
+    if not data:
+        return "系統暫時無法取得資料（請稍後再試）", 200
 
     return render_template("index.html", data=data)
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()
