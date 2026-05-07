@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template
 import requests
 from bs4 import BeautifulSoup
 
@@ -48,7 +48,8 @@ def fetch_lottery():
 
 @app.route("/")
 def home():
-    return jsonify(fetch_lottery())
+    data = fetch_lottery()
+    return render_template("index.html", data=data)
 
 if __name__ == "__main__":
     app.run(debug=True)
